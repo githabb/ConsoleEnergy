@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EnergyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Город">
+          <Key>
+            <PropertyRef Name="Код города" />
+          </Key>
+          <Property Name="Код города" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Заказ">
+          <Key>
+            <PropertyRef Name="Код заказа" />
+          </Key>
+          <Property Name="Код заказа" Type="int" Nullable="false" />
+          <Property Name="Код покупателя" Type="bigint" Nullable="false" />
+          <Property Name="Форма оплаты" Type="nvarchar" MaxLength="50" />
+          <Property Name="Дата заказа" Type="date" Nullable="false" />
+          <Property Name="Дата доставки" Type="date" Nullable="false" />
+          <Property Name="Тип доставки" Type="nvarchar" MaxLength="50" />
+          <Property Name="Цена доставки" Type="float" Nullable="false" />
+          <Property Name="Код курьера" Type="int" />
+          <Property Name="Адрес доставки" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Код города" Type="int" />
+        </EntityType>
+        <EntityType Name="Книга">
+          <Key>
+            <PropertyRef Name="Код книги" />
+          </Key>
+          <Property Name="Код книги" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Раздел литературы" Type="nvarchar" MaxLength="50" />
+          <Property Name="Название" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Авторы" Type="nvarchar" MaxLength="50" />
+          <Property Name="Год издания" Type="int" />
+          <Property Name="Цена" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Корзина Заказа">
+          <Key>
+            <PropertyRef Name="Код заказа" />
+            <PropertyRef Name="Код книги" />
+          </Key>
+          <Property Name="Код заказа" Type="int" Nullable="false" />
+          <Property Name="Код книги" Type="int" Nullable="false" />
+          <Property Name="Количество в заказе" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Курьер">
+          <Key>
+            <PropertyRef Name="Код курьера" />
+          </Key>
+          <Property Name="Код курьера" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Отчество" Type="nvarchar" MaxLength="50" />
+          <Property Name="Пол" Type="nvarchar" MaxLength="10" />
+          <Property Name="Дата рождения" Type="date" />
+          <Property Name="Код города" Type="int" />
+        </EntityType>
+        <EntityType Name="Покупатель">
+          <Key>
+            <PropertyRef Name="Код покупателя" />
+          </Key>
+          <Property Name="Код покупателя" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="50" />
+          <Property Name="Отчество" Type="nvarchar" MaxLength="50" />
+          <Property Name="Пол" Type="nvarchar" MaxLength="10" />
+          <Property Name="Телефон" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Адрес электронной почты" Type="nvarchar" MaxLength="256" />
+          <Property Name="Почтовый адрес" Type="nvarchar" MaxLength="50" />
+          <Property Name="Код города" Type="int" />
+        </EntityType>
+        <Association Name="FK_Заказ_Город">
+          <End Role="Город" Type="Self.Город" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Город">
+              <PropertyRef Name="Код города" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="Код города" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Курьер">
+          <End Role="Курьер" Type="Self.Курьер" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курьер">
+              <PropertyRef Name="Код курьера" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="Код курьера" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Покупатель">
+          <End Role="Покупатель" Type="Self.Покупатель" Multiplicity="1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Покупатель">
+              <PropertyRef Name="Код покупателя" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="Код покупателя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Корзина Заказа_Заказ">
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="1" />
+          <End Role="Корзина Заказа" Type="Self.Корзина Заказа" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Заказ">
+              <PropertyRef Name="Код заказа" />
+            </Principal>
+            <Dependent Role="Корзина Заказа">
+              <PropertyRef Name="Код заказа" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Корзина Заказа_Книга">
+          <End Role="Книга" Type="Self.Книга" Multiplicity="1" />
+          <End Role="Корзина Заказа" Type="Self.Корзина Заказа" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Книга">
+              <PropertyRef Name="Код книги" />
+            </Principal>
+            <Dependent Role="Корзина Заказа">
+              <PropertyRef Name="Код книги" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Покупатель_Город">
+          <End Role="Город" Type="Self.Город" Multiplicity="0..1" />
+          <End Role="Покупатель" Type="Self.Покупатель" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Город">
+              <PropertyRef Name="Код города" />
+            </Principal>
+            <Dependent Role="Покупатель">
+              <PropertyRef Name="Код города" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EnergyModelStoreContainer">
+          <EntitySet Name="Город" EntityType="Self.Город" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Заказ" EntityType="Self.Заказ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Книга" EntityType="Self.Книга" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Корзина Заказа" EntityType="Self.Корзина Заказа" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Курьер" EntityType="Self.Курьер" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Покупатель" EntityType="Self.Покупатель" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Заказ_Город" Association="Self.FK_Заказ_Город">
+            <End Role="Город" EntitySet="Город" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Курьер" Association="Self.FK_Заказ_Курьер">
+            <End Role="Курьер" EntitySet="Курьер" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Покупатель" Association="Self.FK_Заказ_Покупатель">
+            <End Role="Покупатель" EntitySet="Покупатель" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Корзина Заказа_Заказ" Association="Self.FK_Корзина Заказа_Заказ">
+            <End Role="Заказ" EntitySet="Заказ" />
+            <End Role="Корзина Заказа" EntitySet="Корзина Заказа" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Корзина Заказа_Книга" Association="Self.FK_Корзина Заказа_Книга">
+            <End Role="Книга" EntitySet="Книга" />
+            <End Role="Корзина Заказа" EntitySet="Корзина Заказа" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Покупатель_Город" Association="Self.FK_Покупатель_Город">
+            <End Role="Город" EntitySet="Город" />
+            <End Role="Покупатель" EntitySet="Покупатель" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EnergyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Город">
+          <Key>
+            <PropertyRef Name="Код_города" />
+          </Key>
+          <Property Name="Код_города" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Заказ" Relationship="Self.FK_Заказ_Город" FromRole="Город" ToRole="Заказ" />
+          <NavigationProperty Name="Покупатель" Relationship="Self.FK_Покупатель_Город" FromRole="Город" ToRole="Покупатель" />
+        </EntityType>
+        <EntityType Name="Заказ">
+          <Key>
+            <PropertyRef Name="Код_заказа" />
+          </Key>
+          <Property Name="Код_заказа" Type="Int32" Nullable="false" />
+          <Property Name="Код_покупателя" Type="Int64" Nullable="false" />
+          <Property Name="Форма_оплаты" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Дата_заказа" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Дата_доставки" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Тип_доставки" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Цена_доставки" Type="Double" Nullable="false" />
+          <Property Name="Код_курьера" Type="Int32" />
+          <Property Name="Адрес_доставки" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Код_города" Type="Int32" />
+          <NavigationProperty Name="Город" Relationship="Self.FK_Заказ_Город" FromRole="Заказ" ToRole="Город" />
+          <NavigationProperty Name="Курьер" Relationship="Self.FK_Заказ_Курьер" FromRole="Заказ" ToRole="Курьер" />
+          <NavigationProperty Name="Покупатель" Relationship="Self.FK_Заказ_Покупатель" FromRole="Заказ" ToRole="Покупатель" />
+          <NavigationProperty Name="Корзина_Заказа" Relationship="Self.FK_Корзина_Заказа_Заказ" FromRole="Заказ" ToRole="Корзина_Заказа" />
+        </EntityType>
+        <EntityType Name="Книга">
+          <Key>
+            <PropertyRef Name="Код_книги" />
+          </Key>
+          <Property Name="Код_книги" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Раздел_литературы" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Авторы" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Год_издания" Type="Int32" />
+          <Property Name="Цена" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Корзина_Заказа" Relationship="Self.FK_Корзина_Заказа_Книга" FromRole="Книга" ToRole="Корзина_Заказа" />
+        </EntityType>
+        <EntityType Name="Корзина_Заказа">
+          <Key>
+            <PropertyRef Name="Код_заказа" />
+            <PropertyRef Name="Код_книги" />
+          </Key>
+          <Property Name="Код_заказа" Type="Int32" Nullable="false" />
+          <Property Name="Код_книги" Type="Int32" Nullable="false" />
+          <Property Name="Количество_в_заказе" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Заказ" Relationship="Self.FK_Корзина_Заказа_Заказ" FromRole="Корзина_Заказа" ToRole="Заказ" />
+          <NavigationProperty Name="Книга" Relationship="Self.FK_Корзина_Заказа_Книга" FromRole="Корзина_Заказа" ToRole="Книга" />
+        </EntityType>
+        <EntityType Name="Курьер">
+          <Key>
+            <PropertyRef Name="Код_курьера" />
+          </Key>
+          <Property Name="Код_курьера" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Пол" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Дата_рождения" Type="DateTime" Precision="0" />
+          <Property Name="Код_города" Type="Int32" />
+          <NavigationProperty Name="Заказ" Relationship="Self.FK_Заказ_Курьер" FromRole="Курьер" ToRole="Заказ" />
+        </EntityType>
+        <EntityType Name="Покупатель">
+          <Key>
+            <PropertyRef Name="Код_покупателя" />
+          </Key>
+          <Property Name="Код_покупателя" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Пол" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Телефон" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Адрес_электронной_почты" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Почтовый_адрес" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Код_города" Type="Int32" />
+          <NavigationProperty Name="Город" Relationship="Self.FK_Покупатель_Город" FromRole="Покупатель" ToRole="Город" />
+          <NavigationProperty Name="Заказ" Relationship="Self.FK_Заказ_Покупатель" FromRole="Покупатель" ToRole="Заказ" />
+        </EntityType>
+        <Association Name="FK_Заказ_Город">
+          <End Role="Город" Type="Self.Город" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Город">
+              <PropertyRef Name="Код_города" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="Код_города" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Покупатель_Город">
+          <End Role="Город" Type="Self.Город" Multiplicity="0..1" />
+          <End Role="Покупатель" Type="Self.Покупатель" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Город">
+              <PropertyRef Name="Код_города" />
+            </Principal>
+            <Dependent Role="Покупатель">
+              <PropertyRef Name="Код_города" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Курьер">
+          <End Role="Курьер" Type="Self.Курьер" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курьер">
+              <PropertyRef Name="Код_курьера" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="Код_курьера" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Покупатель">
+          <End Role="Покупатель" Type="Self.Покупатель" Multiplicity="1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Покупатель">
+              <PropertyRef Name="Код_покупателя" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="Код_покупателя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Корзина_Заказа_Заказ">
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="1" />
+          <End Role="Корзина_Заказа" Type="Self.Корзина_Заказа" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Заказ">
+              <PropertyRef Name="Код_заказа" />
+            </Principal>
+            <Dependent Role="Корзина_Заказа">
+              <PropertyRef Name="Код_заказа" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Корзина_Заказа_Книга">
+          <End Role="Книга" Type="Self.Книга" Multiplicity="1" />
+          <End Role="Корзина_Заказа" Type="Self.Корзина_Заказа" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Книга">
+              <PropertyRef Name="Код_книги" />
+            </Principal>
+            <Dependent Role="Корзина_Заказа">
+              <PropertyRef Name="Код_книги" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EnergyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Город" EntityType="Self.Город" />
+          <EntitySet Name="Заказ" EntityType="Self.Заказ" />
+          <EntitySet Name="Книга" EntityType="Self.Книга" />
+          <EntitySet Name="Корзина_Заказа" EntityType="Self.Корзина_Заказа" />
+          <EntitySet Name="Курьер" EntityType="Self.Курьер" />
+          <EntitySet Name="Покупатель" EntityType="Self.Покупатель" />
+          <AssociationSet Name="FK_Заказ_Город" Association="Self.FK_Заказ_Город">
+            <End Role="Город" EntitySet="Город" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Покупатель_Город" Association="Self.FK_Покупатель_Город">
+            <End Role="Город" EntitySet="Город" />
+            <End Role="Покупатель" EntitySet="Покупатель" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Курьер" Association="Self.FK_Заказ_Курьер">
+            <End Role="Курьер" EntitySet="Курьер" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Покупатель" Association="Self.FK_Заказ_Покупатель">
+            <End Role="Покупатель" EntitySet="Покупатель" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Корзина_Заказа_Заказ" Association="Self.FK_Корзина_Заказа_Заказ">
+            <End Role="Заказ" EntitySet="Заказ" />
+            <End Role="Корзина_Заказа" EntitySet="Корзина_Заказа" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Корзина_Заказа_Книга" Association="Self.FK_Корзина_Заказа_Книга">
+            <End Role="Книга" EntitySet="Книга" />
+            <End Role="Корзина_Заказа" EntitySet="Корзина_Заказа" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EnergyModelStoreContainer" CdmEntityContainer="EnergyEntities">
+          <EntitySetMapping Name="Город">
+            <EntityTypeMapping TypeName="EnergyModel.Город">
+              <MappingFragment StoreEntitySet="Город">
+                <ScalarProperty Name="Код_города" ColumnName="Код города" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Заказ">
+            <EntityTypeMapping TypeName="EnergyModel.Заказ">
+              <MappingFragment StoreEntitySet="Заказ">
+                <ScalarProperty Name="Код_заказа" ColumnName="Код заказа" />
+                <ScalarProperty Name="Код_покупателя" ColumnName="Код покупателя" />
+                <ScalarProperty Name="Форма_оплаты" ColumnName="Форма оплаты" />
+                <ScalarProperty Name="Дата_заказа" ColumnName="Дата заказа" />
+                <ScalarProperty Name="Дата_доставки" ColumnName="Дата доставки" />
+                <ScalarProperty Name="Тип_доставки" ColumnName="Тип доставки" />
+                <ScalarProperty Name="Цена_доставки" ColumnName="Цена доставки" />
+                <ScalarProperty Name="Код_курьера" ColumnName="Код курьера" />
+                <ScalarProperty Name="Адрес_доставки" ColumnName="Адрес доставки" />
+                <ScalarProperty Name="Код_города" ColumnName="Код города" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Книга">
+            <EntityTypeMapping TypeName="EnergyModel.Книга">
+              <MappingFragment StoreEntitySet="Книга">
+                <ScalarProperty Name="Код_книги" ColumnName="Код книги" />
+                <ScalarProperty Name="Раздел_литературы" ColumnName="Раздел литературы" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Авторы" ColumnName="Авторы" />
+                <ScalarProperty Name="Год_издания" ColumnName="Год издания" />
+                <ScalarProperty Name="Цена" ColumnName="Цена" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Корзина_Заказа">
+            <EntityTypeMapping TypeName="EnergyModel.Корзина_Заказа">
+              <MappingFragment StoreEntitySet="Корзина Заказа">
+                <ScalarProperty Name="Код_заказа" ColumnName="Код заказа" />
+                <ScalarProperty Name="Код_книги" ColumnName="Код книги" />
+                <ScalarProperty Name="Количество_в_заказе" ColumnName="Количество в заказе" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Курьер">
+            <EntityTypeMapping TypeName="EnergyModel.Курьер">
+              <MappingFragment StoreEntitySet="Курьер">
+                <ScalarProperty Name="Код_курьера" ColumnName="Код курьера" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+                <ScalarProperty Name="Дата_рождения" ColumnName="Дата рождения" />
+                <ScalarProperty Name="Код_города" ColumnName="Код города" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Покупатель">
+            <EntityTypeMapping TypeName="EnergyModel.Покупатель">
+              <MappingFragment StoreEntitySet="Покупатель">
+                <ScalarProperty Name="Код_покупателя" ColumnName="Код покупателя" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+                <ScalarProperty Name="Телефон" ColumnName="Телефон" />
+                <ScalarProperty Name="Адрес_электронной_почты" ColumnName="Адрес электронной почты" />
+                <ScalarProperty Name="Почтовый_адрес" ColumnName="Почтовый адрес" />
+                <ScalarProperty Name="Код_города" ColumnName="Код города" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

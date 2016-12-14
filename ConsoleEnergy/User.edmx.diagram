@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a40f0d17c3b44d1aa8247a2685cf925d" Name="Diagram1">
+        <EntityTypeShape EntityType="EnergyModel.Город" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnergyModel.Заказ" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnergyModel.Книга" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnergyModel.Корзина_Заказа" Width="1.5" PointX="7.5" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnergyModel.Курьер" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnergyModel.Покупатель" Width="1.5" PointX="2.875" PointY="6.25" IsExpanded="true" />
+        <AssociationConnector Association="EnergyModel.FK_Заказ_Город" ManuallyRouted="false" />
+        <AssociationConnector Association="EnergyModel.FK_Покупатель_Город" ManuallyRouted="false" />
+        <AssociationConnector Association="EnergyModel.FK_Заказ_Курьер" ManuallyRouted="false" />
+        <AssociationConnector Association="EnergyModel.FK_Заказ_Покупатель" ManuallyRouted="false" />
+        <AssociationConnector Association="EnergyModel.FK_Корзина_Заказа_Заказ" ManuallyRouted="false" />
+        <AssociationConnector Association="EnergyModel.FK_Корзина_Заказа_Книга" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
