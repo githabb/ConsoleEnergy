@@ -11,7 +11,7 @@ using WebBook.Models;
 
 namespace WebBook.Controllers
 {
-    public class СourierController : ApiController
+    public class CourierController : ApiController
     {
         public IEnumerable<Courier> GetСouriers()
         {
@@ -70,7 +70,6 @@ namespace WebBook.Controllers
 
             Курьер dbКурьер = new Курьер()
             {
-                Код_курьера = courier.CodCourier,
                 Фамилия = courier.Surname,
                 Имя = courier.Name,
                 Отчество = courier.Otchectvo,
@@ -88,7 +87,6 @@ namespace WebBook.Controllers
 
             var result = new Courier
             {
-
                 CodCourier = dbКурьер.Код_курьера,
                 Surname = dbКурьер.Фамилия,
                 CodCity = dbКурьер.Код_города,

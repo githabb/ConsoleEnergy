@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Cors;
 
 namespace WebBook
 {
@@ -12,6 +13,7 @@ namespace WebBook
     {
         public static void Register(HttpConfiguration config)
         {
+            
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
@@ -24,7 +26,12 @@ namespace WebBook
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
+
+            
             );
+            var cors = new EnableCorsAttribute("http://localhost:18197", "*", "*");
+            config.EnableCors(cors);
+
         }
     }
 }
