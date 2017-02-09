@@ -11,7 +11,7 @@ using WebBook.Models;
 
 namespace WebBook.Controllers
 {
-    public class CourierController : ApiController
+    public class CourierController : BaseApiController
     {
         public IEnumerable<Courier> GetСouriers()
         {
@@ -79,10 +79,18 @@ namespace WebBook.Controllers
 
 
             };
+
             using (EnergyEntities db = new EnergyEntities())
             {
-                db.Курьер.Add(dbКурьер);
-                db.SaveChanges();
+                try
+                {
+                    db.Курьер.Add(dbКурьер);
+                    db.SaveChanges();
+                }
+                catch(Exception ex)
+                {
+                    return Conflict("Конфликт данных при сохранении курьера");
+                }
             }
 
             var result = new Courier
